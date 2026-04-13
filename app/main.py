@@ -1,0 +1,29 @@
+import logging
+from http.server import HTTPServer
+
+
+from image_hosting_handler import ImageHostingHandler
+
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
+
+logger = logging.getLogger(__name__)
+
+
+def run(server_address = ('', 8000), server_class=HTTPServer, handler_class=ImageHostingHandler):
+    logger.info(f'Starting server on {server_address}')
+    httpd = server_class(server_address, handler_class)  # noqa
+
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        logger.info('Server stopped by user')
+        httpd.server_close()
+    except Exception as e:
+        logger.error(f'Error: {e}')
+
+
+if __name__ == '__main__':
+    run()
