@@ -15,4 +15,8 @@ class ImageHostingHandler(BaseHandler):
         else:
             self.html_response('Not Found', 404)
 
-    # TODO: do_POST
+    def do_POST(self):
+        if self.path == '/api/upload':
+            self.upload_file()
+        else:
+            self.html_response('Not Found', 404)
