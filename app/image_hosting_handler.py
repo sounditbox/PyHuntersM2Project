@@ -14,3 +14,5 @@ class ImageHostingHandler(BaseHandler):
             self.send_file(self.path)
         else:
             self.html_response('Not Found', 404)
+
+    # TODO: do_POST

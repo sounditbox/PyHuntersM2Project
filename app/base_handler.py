@@ -5,8 +5,9 @@ from http.server import BaseHTTPRequestHandler
 import logging
 
 from app.settings import STATIC_DIR
-import pathlib
+
 logger = logging.getLogger(__name__)
+
 
 class BaseHandler(BaseHTTPRequestHandler):
     server_version = '0.1'
