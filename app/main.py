@@ -1,7 +1,7 @@
 import logging
 from http.server import HTTPServer
 
-
+from app.settings import LOG_PATH
 from image_hosting_handler import ImageHostingHandler
 
 
@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO,
                     datefmt='%Y-%m-%d %H:%M:%S',
                     handlers=[
                         logging.StreamHandler(),
-                        logging.FileHandler(f'../{LOGDIR}/server.log')
+                        logging.FileHandler(LOG_PATH / 'server.log')
                     ]
                     )
 
