@@ -54,8 +54,8 @@ class ImageHostingHandler(BaseHandler):
         try:
             (MEDIA_PATH / name).unlink()
             logger.info(f"Image {name} deleted successfully")
-            self.json_response({'message': 'Image deleted successfully'}, status_code=204)
+            self.json_response({'message': 'Image deleted successfully'},
+                               status_code=204)
         except FileNotFoundError:
             logger.info(f"Image {name} not found (on delete)")
             self.json_response({'message': 'Image not found'}, 404)
-

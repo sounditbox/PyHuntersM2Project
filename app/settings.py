@@ -13,7 +13,6 @@ STATIC_PATH = WORKDIR / STATIC_DIR
 MEDIA_DIR = pathlib.Path(os.getenv('MEDIA_DIR', 'images'))
 MEDIA_PATH = WORKDIR / MEDIA_DIR
 
-
 IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif']
 
 MAX_FILE_SIZE_MB = 5

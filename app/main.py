@@ -4,7 +4,6 @@ from http.server import HTTPServer
 from app.settings import LOG_PATH
 from app.image_hosting_handler import ImageHostingHandler
 
-
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
@@ -17,7 +16,8 @@ logging.basicConfig(level=logging.INFO,
 logger = logging.getLogger(__name__)
 
 
-def run(server_address = ('', 8000), server_class=HTTPServer, handler_class=ImageHostingHandler):
+def run(server_address=('', 8000), server_class=HTTPServer,
+        handler_class=ImageHostingHandler):
     logger.info(f'Starting server on {server_address}')
     httpd = server_class(server_address, handler_class)  # noqa
 
