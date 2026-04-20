@@ -2,7 +2,7 @@ import logging
 from http.server import HTTPServer
 
 from app.settings import LOG_PATH
-from image_hosting_handler import ImageHostingHandler
+from app.image_hosting_handler import ImageHostingHandler
 
 
 logging.basicConfig(level=logging.INFO,

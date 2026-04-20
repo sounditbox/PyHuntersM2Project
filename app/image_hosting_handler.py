@@ -1,6 +1,6 @@
 import logging
 import uuid
-from base_handler import BaseHandler
+from app.base_handler import BaseHandler
 
 logger = logging.getLogger(__name__)
 

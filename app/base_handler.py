@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import json
 from http.server import BaseHTTPRequestHandler
+from pathlib import Path
 
 import logging
 from multipart import MultipartParser, parse_options_header, MultipartPart
 
-from app.settings import STATIC_DIR, IMAGE_EXTENSIONS, MAX_FILE_SIZE, \
+from app.settings import STATIC_PATH, IMAGE_EXTENSIONS, MAX_FILE_SIZE, \
     MEDIA_PATH
 
 logger = logging.getLogger(__name__)
@@ -37,9 +38,14 @@ class BaseHandler(BaseHTTPRequestHandler):
     @staticmethod
     def load_static(filename: str) -> bytes:
         try:
-            with open(f'../{STATIC_DIR}/{filename}', 'rb') as file:
+            static_path = (STATIC_PATH / filename.lstrip('/')).resolve()
+            static_path.relative_to(STATIC_PATH.resolve())
+
+            with open(static_path, 'rb') as file:
                 return file.read()
         except FileNotFoundError:
+            return b'Not Found'
+        except ValueError:
             return b'Not Found'
 
     def template_response(self, template_filename: str) -> None:
@@ -57,7 +63,12 @@ class BaseHandler(BaseHTTPRequestHandler):
         self.response(self.load_static(filename), content_type)
 
     def validate_file(self, file: MultipartPart) -> bool:
-        name, ext = file.filename.split('.')
+        ext = Path(file.filename).suffix.lstrip('.').lower()
+        if not ext:
+            self.response(
+                f'Invalid file type. Allowed types: {IMAGE_EXTENSIONS}',
+                status_code=400)
+            return False
         if ext.lower() not in IMAGE_EXTENSIONS:
             self.response(
                 f'Invalid file type. Allowed types: {IMAGE_EXTENSIONS}',
@@ -78,7 +89,9 @@ class BaseHandler(BaseHTTPRequestHandler):
             for part in parser:
                 if self.validate_file(part):
                     logger.info(f"{part.name}: File upload ({part.size} bytes)")
-                    part.save_as(MEDIA_PATH / (f'{filename}.{part.filename.split(".")[1]}' or part.filename))
+                    ext = Path(part.filename).suffix
+                    uploaded_name = f'{filename}{ext}' if filename else part.filename
+                    part.save_as(MEDIA_PATH / uploaded_name)
                 else:
                     logger.info(
                         f"{part.name}: Invalid file ({part.size} bytes)")
