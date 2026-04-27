@@ -49,18 +49,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             list.id = 'file-list';
 
             storedFiles.forEach((filename) => {
+                const imageUrl = `${window.location.origin}/images/${filename}`;
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-list-item';
                 fileItem.innerHTML = `
                     <div class="file-col file-col-image">
-                        <img src="/api/images/${filename}" alt="file icon" width="20%">
+                        <img src="${imageUrl}" alt="file icon" width="20%">
                     </div>
                     <div class="file-col file-col-name">
                         <span class="file-name">${filename}</span>
                     </div>
-                    <div class="file-col file-col-url"><a href="http://localhost/api/images/${filename}" target="_blank">http://localhost/api/images/${filename}</a></div>
+                    <div class="file-col file-col-url"><a href="${imageUrl}" target="_blank">${imageUrl}</a></div>
                     <div class="file-col file-col-delete">
-                        <button data-filename="${filename}" class="delete-btn"><img src="/static/image-uploader/img/icon/delete.png/" alt="delete icon"></button>
+                        <button data-filename="${filename}" class="delete-btn"><img src="/static/image-uploader/img/icon/delete.png" alt="delete icon"></button>
                     </div>
                 `;
                 list.appendChild(fileItem);
