@@ -5,6 +5,7 @@ from http.server import BaseHTTPRequestHandler
 from pathlib import Path
 
 import logging
+from PIL import Image
 from multipart import MultipartParser, parse_options_header, MultipartPart
 
 from app.settings import STATIC_PATH, IMAGE_EXTENSIONS, MAX_FILE_SIZE, \
@@ -80,7 +81,13 @@ class BaseHandler(BaseHTTPRequestHandler):
         if file.size > MAX_FILE_SIZE:
             self.response('File size too large', status_code=400)
             return False
-        # TODO: validate file with PIL
+        temp_file = f'temp.{ext}'
+        file.save_as(temp_file)
+        try:
+            with Image.open(temp_file) as img:
+                img.verify()
+        except (IOError, SyntaxError):
+            return False
         return True
 
     def parse_multipart(self, content_type: str, options: dict,
