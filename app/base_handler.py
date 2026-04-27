@@ -66,20 +66,14 @@ class BaseHandler(BaseHTTPRequestHandler):
     def send_media_file(self, filename: str) -> None:
         self.response(self.load_file(filename, MEDIA_PATH), 'image/png')
 
-    def validate_file(self, file: MultipartPart) -> bool:
+    @staticmethod
+    def validate_file(file: MultipartPart) -> bool:
         ext = Path(file.filename).suffix.lstrip('.').lower()
         if not ext:
-            self.response(
-                f'Invalid file type. Allowed types: {IMAGE_EXTENSIONS}',
-                status_code=400)
             return False
         if ext.lower() not in IMAGE_EXTENSIONS:
-            self.response(
-                f'Invalid file type. Allowed types: {IMAGE_EXTENSIONS}',
-                status_code=400)
             return False
         if file.size > MAX_FILE_SIZE:
-            self.response('File size too large', status_code=400)
             return False
         temp_file = f'temp.{ext}'
         file.save_as(temp_file)
@@ -109,7 +103,7 @@ class BaseHandler(BaseHTTPRequestHandler):
                 else:
                     logger.info(
                         f"{part.name}: Invalid file ({part.size} bytes)")
-                    return
+                    return None
 
             for part in parser.parts():
                 part.close()
