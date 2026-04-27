@@ -9,6 +9,7 @@ services:
       - ./images:/app/images
       - ./logs:/app/logs
     env_file: .env
+    restart: always
 
   nginx:
     image: nginx:alpine
