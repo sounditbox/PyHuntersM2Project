@@ -76,8 +76,19 @@ class ImageHostingHandler(BaseHandler):
         )
 
     def get_images(self):
+        images = self.db.get_images()
+        res_images = [
+            {
+                'id': i[0],
+                'filename': i[1],
+                'original_name': i[2],
+                'size': i[3],
+                'upload_time': i[4].strftime('%Y-%m-%d %H:%M:%S'),
+                'file_type': i[5]
+            }
+            for i in images]
         self.json_response({
-            'images': self.db.get_images()
+            'images': res_images
         })
 
     def delete_image(self, name: str):

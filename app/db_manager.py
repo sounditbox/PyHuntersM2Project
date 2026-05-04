@@ -28,10 +28,10 @@ class DBManager:
         self._connection: Optional[Connection] = None
         self.row_factory = row_factory
 
-        self.init_tables()
+        # self.init_tables()
 
     def _execute(self, query, data: Params = None, fetch: bool = True,
-                 fetch_all: bool = True):
+                 fetch_all: bool = True) -> list | None:
         try:
             with self._connect() as conn:
                 with conn.cursor() as cur:
@@ -49,13 +49,13 @@ class DBManager:
         return self._connection if self._connection else connect(self.dsn,
                                                                  row_factory=self.row_factory)
 
-    def fetch_all(self, query, data: Params = None):
+    def fetch_all(self, query, data: Params = None) -> list | None:
         return self._execute(query, data)
 
-    def fetch_one(self, query, data: Params = None):
+    def fetch_one(self, query, data: Params = None) -> list | None:
         return self._execute(query, data, fetch_all=False)
 
-    def execute(self, query, data: Params = None):
+    def execute(self, query, data: Params = None) -> list | None:
         return self._execute(query, data, fetch=False, fetch_all=False)
 
     def add_image(self, image: dict):
@@ -65,7 +65,7 @@ class DBManager:
         return self.fetch_all(GET_IMAGES_NAMES)
 
     def get_images(self):
-        return self.fetch_one(GET_ALL_IMAGES)
+        return self.fetch_all(GET_ALL_IMAGES)
 
     def delete_image(self, name):
         self.execute(DELETE_IMAGE_BY_NAME, (name,))

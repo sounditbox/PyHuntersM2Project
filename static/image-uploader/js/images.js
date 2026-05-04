@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
     const displayFiles = async () => {
-        const storedFiles = await fetch('/api/images').then(res => res.json()).then(data => data.images);
+        const storedFiles = await fetch('/api/images-data/').then(res => res.json()).then(data => data.images);
         fileListWrapper.innerHTML = '';
 
         if (storedFiles.length === 0) {
@@ -48,8 +48,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const list = document.createElement('div');
             list.id = 'file-list';
 
-            storedFiles.forEach((filename) => {
-                const imageUrl = `${window.location.origin}/images/${filename}`;
+            storedFiles.forEach((image) => {
+                const imageUrl = `${window.location.origin}/images/${image.filename}.${image.file_type}`;
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-list-item';
                 fileItem.innerHTML = `
@@ -57,11 +57,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <img src="${imageUrl}" alt="file icon" width="20%">
                     </div>
                     <div class="file-col file-col-name">
-                        <span class="file-name">${filename}</span>
+                        <span class="file-name">${image.original_name}</span>
                     </div>
                     <div class="file-col file-col-url"><a href="${imageUrl}" target="_blank">${imageUrl}</a></div>
                     <div class="file-col file-col-delete">
-                        <button data-filename="${filename}" class="delete-btn"><img src="/static/image-uploader/img/icon/delete.png" alt="delete icon"></button>
+                        <button data-filename="${image.filename}" class="delete-btn"><img src="/static/image-uploader/img/icon/delete.png" alt="delete icon"></button>
                     </div>
                 `;
                 list.appendChild(fileItem);
