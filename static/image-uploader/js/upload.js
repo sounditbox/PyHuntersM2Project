@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 continue;
             }
             const data = await response.json();
-            currentUploadInput.value = `${window.location.origin}/images/${data.filename}`;
+            currentUploadInput.value = `${window.location.origin}/images/${data.image.filename}.${data.image.file_type}`;
             alert("Files selected successfully! Go to the 'Images' tab to view them.");
 
         }
