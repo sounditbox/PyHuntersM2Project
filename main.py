@@ -3,7 +3,6 @@ from http.server import HTTPServer
 
 from app.settings import LOG_PATH
 from app.image_hosting_handler import ImageHostingHandler
-
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
