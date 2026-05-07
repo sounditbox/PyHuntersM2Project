@@ -12,12 +12,10 @@ logger = logging.getLogger(__name__)
 class ImageHostingHandler(BaseHandler):
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.db: DBManager = DBManager()
+        super().__init__(*args, **kwargs)
 
     def do_GET(self):
-        self.db: DBManager = DBManager()
-
         logger.info(f"GET {self.client_address[0]}: {self.path}")
 
         if self.path.startswith('/api/'):
@@ -44,8 +42,6 @@ class ImageHostingHandler(BaseHandler):
             self.html_response('Not Found', 404)
 
     def do_POST(self):
-        self.db: DBManager = DBManager()
-
         logger.info(f"POST {self.client_address[0]}: {self.path}")
         if self.path == '/api/upload':
             image_dict = self.upload_file()
@@ -63,7 +59,6 @@ class ImageHostingHandler(BaseHandler):
             self.html_response('Not Found', 404)
 
     def do_DELETE(self):
-        self.db: DBManager = DBManager()
 
         logger.info(f"DELETE {self.client_address[0]}: {self.path}")
         if self.path.startswith('/api/images/'):
