@@ -28,7 +28,7 @@ class DBManager:
         self._connection: Optional[Connection] = None
         self.row_factory = row_factory
 
-        # self.init_tables()
+        self.init_tables()
 
     def _execute(self, query, data: Params = None, fetch: bool = True,
                  fetch_all: bool = True) -> list | None:
